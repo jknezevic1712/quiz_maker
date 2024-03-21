@@ -112,6 +112,7 @@ export default function AddQuizPopup({ saveFn }: AddQuizPopupProps) {
                       <FormLabel>Question</FormLabel>
                       <FormControl>
                         <Textarea
+                          rows={5}
                           placeholder="Type your question here..."
                           {...field}
                         />
