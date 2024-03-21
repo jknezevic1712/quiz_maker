@@ -15,10 +15,16 @@ export default function TableItem(props: TableItemProps) {
       <p className="font-bold leading-normal">{item.name}</p>
 
       <div className="flex items-center gap-4">
-        <Button className="px-3 py-1.5 text-zinc-950 transition-all hover:scale-110">
+        <Button
+          className="px-3 py-1.5 text-zinc-950 transition-all hover:scale-110"
+          variant="ghost"
+        >
           <CircleX />
         </Button>
-        <Button className="px-3 py-1.5 text-zinc-950 transition-all hover:scale-110">
+        <Button
+          className="px-3 py-1.5 text-zinc-950 transition-all hover:scale-110"
+          variant="ghost"
+        >
           <CirclePlay />
         </Button>
       </div>
