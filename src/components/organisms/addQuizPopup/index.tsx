@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type * as z from "zod";
 // components
@@ -49,22 +49,19 @@ export default function AddQuizPopup({ saveFn }: AddQuizPopupProps) {
 
   function onSubmit(formData: z.infer<typeof QuizFormSchema>) {
     saveFn(formData as Omit<Quiz, "id">);
-
-    closeDialog();
-    form.reset();
   }
 
-  // useEffect(() => {
-  //   if (form.formState.isSubmitSuccessful) {
-  //     closeDialog();
-  //     form.reset();
-  //   }
-  // }, [form.formState.isSubmitSuccessful, form.reset]);
+  useEffect(() => {
+    if (form.formState.isSubmitSuccessful) {
+      closeDialog();
+      form.reset();
+    }
+  }, [form.formState.isSubmitSuccessful, form.reset]);
 
   return (
     <DialogRoot modal={true}>
       <DialogTrigger asChild>
-        <Button className="w-full md:w-fit" variant="default">
+        <Button className="w-full md:w-fit" variant="secondary">
           New Quiz
         </Button>
       </DialogTrigger>
@@ -80,7 +77,7 @@ export default function AddQuizPopup({ saveFn }: AddQuizPopupProps) {
           <form
             id="dialogForm"
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-6"
+            className="max-h-[600px] space-y-6 overflow-y-scroll"
           >
             <FormField
               control={form.control}
