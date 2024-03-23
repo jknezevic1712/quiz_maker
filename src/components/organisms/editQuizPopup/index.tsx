@@ -47,6 +47,8 @@ export default function EditQuizPopup({
     saveFn(formData);
   }
 
+  const isSaveBtnDisabled = Object.keys(form.formState.dirtyFields).length < 1;
+
   useEffect(() => {
     if (form.formState.isSubmitSuccessful) {
       closePopup();
@@ -132,7 +134,12 @@ export default function EditQuizPopup({
           </Form>
 
           <DialogFooter>
-            <Button form="dialogForm" type="submit" variant="ghost">
+            <Button
+              form="dialogForm"
+              type="submit"
+              variant="secondary"
+              disabled={isSaveBtnDisabled}
+            >
               Save
             </Button>
           </DialogFooter>
