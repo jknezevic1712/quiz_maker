@@ -40,7 +40,7 @@ const defaultValues: Omit<z.infer<typeof QuizFormSchema>, "id"> = {
 };
 
 type AddQuizPopupProps = {
-  saveFn: (quiz: Omit<Quiz, "id">) => void;
+  saveFn: (quiz: Quiz) => void;
 };
 export default function AddQuizPopup({ saveFn }: AddQuizPopupProps) {
   const form = useForm<z.infer<typeof QuizFormSchema>>({
@@ -48,8 +48,8 @@ export default function AddQuizPopup({ saveFn }: AddQuizPopupProps) {
     defaultValues,
   });
 
-  function onSubmit(formData: z.infer<typeof QuizFormSchema>) {
-    saveFn(formData as Omit<Quiz, "id">);
+  function onSubmit(formData: Omit<z.infer<typeof QuizFormSchema>, "id">) {
+    saveFn({ id: crypto.randomUUID(), ...formData });
   }
 
   useEffect(() => {
@@ -97,8 +97,8 @@ export default function AddQuizPopup({ saveFn }: AddQuizPopupProps) {
               )}
             />
 
-            {form.getValues().questions.map((_q, idx) => (
-              <Fragment key={"question-" + idx}>
+            {form.getValues().questions.map((q, idx) => (
+              <Fragment key={q.id}>
                 <h2 className="w-full border-b border-zinc-950 pb-2 italic">
                   Question {idx + 1}
                 </h2>

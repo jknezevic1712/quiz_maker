@@ -87,8 +87,8 @@ export default function EditQuizPopup({
                 )}
               />
 
-              {form.getValues().questions.map((_q, idx) => (
-                <Fragment key={"question-" + idx}>
+              {form.getValues().questions.map((q, idx) => (
+                <Fragment key={q.id}>
                   <h2 className="w-full border-b border-zinc-950 pb-2 italic">
                     Question {idx + 1}
                   </h2>

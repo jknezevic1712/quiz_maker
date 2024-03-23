@@ -14,8 +14,8 @@ type TableProps = {
 export default function Table(props: TableProps) {
   const { tableData, setTableData } = props;
 
-  function addNewQuiz(quiz: Omit<Quiz, "id">) {
-    setTableData((prev) => [...prev, { id: crypto.randomUUID(), ...quiz }]);
+  function addNewQuiz(quiz: Quiz) {
+    setTableData((prev) => [...prev, quiz]);
   }
 
   function editQuiz(quiz: Quiz) {
