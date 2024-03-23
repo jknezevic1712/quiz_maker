@@ -15,7 +15,7 @@ export default function Table(props: TableProps) {
   const { tableData, setTableData } = props;
 
   function addNewQuiz(quiz: Omit<Quiz, "id">) {
-    setTableData((prev) => [...prev, { ...quiz, id: tableData.length + 1 }]);
+    setTableData((prev) => [...prev, { id: crypto.randomUUID(), ...quiz }]);
   }
 
   function editQuiz(quiz: Quiz) {
@@ -28,7 +28,7 @@ export default function Table(props: TableProps) {
     setTableData(updatedData);
   }
 
-  function deleteQuiz(quizID: number) {
+  function deleteQuiz(quizID: string) {
     const confirmDialogResult = confirm(
       "Are you sure you want to delete the quiz?",
     );

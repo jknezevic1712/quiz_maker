@@ -11,7 +11,7 @@ import { Quiz } from "~/lib/types/api";
 type TableItemProps = {
   item: Quiz;
   editQuiz: (quiz: Quiz) => void;
-  deleteQuiz: (quizID: number) => void;
+  deleteQuiz: (quizID: string) => void;
 };
 export default function TableItem(props: TableItemProps) {
   const { item, editQuiz, deleteQuiz } = props;

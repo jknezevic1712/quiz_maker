@@ -1,7 +1,7 @@
 import * as z from "zod";
 
 const quizSchema = z.object({
-  id: z.number(),
+  id: z.string().optional(),
   question: z
     .string({ required_error: "Please fill out the question" })
     .min(1, "Question can't be empty"),
@@ -11,7 +11,7 @@ const quizSchema = z.object({
 });
 
 export const QuizFormSchema = z.object({
-  id: z.number(),
+  id: z.string().optional(),
   name: z
     .string({
       required_error: "Please enter quiz name",

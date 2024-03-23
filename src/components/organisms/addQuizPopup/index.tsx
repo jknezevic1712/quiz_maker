@@ -28,10 +28,11 @@ import Separator from "~/components/atoms/separator";
 // types
 import { Quiz } from "~/lib/types/api";
 
-const defaultValues: z.infer<typeof QuizFormSchema> = {
+const defaultValues: Omit<z.infer<typeof QuizFormSchema>, "id"> = {
   name: "",
   questions: [
     {
+      id: crypto.randomUUID(),
       question: "",
       answer: "",
     },
@@ -101,6 +102,7 @@ export default function AddQuizPopup({ saveFn }: AddQuizPopupProps) {
                 <h2 className="w-full border-b border-zinc-950 pb-2 italic">
                   Question {idx + 1}
                 </h2>
+
                 <FormField
                   control={form.control}
                   name={`questions.${idx}.question`}
