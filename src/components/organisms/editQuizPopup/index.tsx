@@ -1,7 +1,5 @@
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { Fragment, useEffect } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import type * as z from "zod";
 // components
 import {
   DialogRoot,
@@ -23,6 +21,10 @@ import {
 import { Input } from "~/components/atoms/input";
 import { QuizFormSchema } from "~/lib/assets/formSchemas";
 import Separator from "~/components/atoms/separator";
+import { Minus, Plus } from "lucide-react";
+// utils
+import { zodResolver } from "@hookform/resolvers/zod";
+import type * as z from "zod";
 // types
 import { Quiz } from "~/lib/types/api";
 
@@ -42,12 +44,24 @@ export default function EditQuizPopup({
     resolver: zodResolver(QuizFormSchema),
     defaultValues: item,
   });
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "questions",
+  });
 
   function onSubmit(formData: z.infer<typeof QuizFormSchema>) {
-    saveFn(formData);
+    if (JSON.stringify(formData) === JSON.stringify(item)) return;
+    saveFn(formData as Quiz);
   }
 
-  const isSaveBtnDisabled = Object.keys(form.formState.dirtyFields).length < 1;
+  function addNewQuestion() {
+    const newQuestion = {
+      id: crypto.randomUUID(),
+      question: "",
+      answer: "",
+    };
+    append(newQuestion);
+  }
 
   useEffect(() => {
     if (form.formState.isSubmitSuccessful) {
@@ -73,7 +87,6 @@ export default function EditQuizPopup({
               className="max-h-[600px] space-y-6 overflow-y-scroll"
             >
               <FormField
-                control={form.control}
                 name="name"
                 render={({ field }) => (
                   <FormItem>
@@ -82,6 +95,7 @@ export default function EditQuizPopup({
                       <Input
                         placeholder="Type your quiz name here..."
                         {...field}
+                        {...form.register("name")}
                       />
                     </FormControl>
                     <FormMessage />
@@ -89,13 +103,21 @@ export default function EditQuizPopup({
                 )}
               />
 
-              {form.getValues().questions.map((q, idx) => (
-                <Fragment key={q.id}>
-                  <h2 className="w-full border-b border-zinc-950 pb-2 italic">
-                    Question {idx + 1}
-                  </h2>
+              {fields.map((field, idx) => (
+                <Fragment key={field.id}>
+                  <div className="flex w-full items-center justify-between border-b border-zinc-950 pb-2">
+                    <h2 className="italic">Question {idx + 1}</h2>
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      onClick={() => remove(idx)}
+                      disabled={idx === 0}
+                    >
+                      <Minus />
+                    </Button>
+                  </div>
+
                   <FormField
-                    control={form.control}
                     name={`questions.${idx}.question`}
                     render={({ field }) => (
                       <FormItem>
@@ -105,6 +127,9 @@ export default function EditQuizPopup({
                             rows={5}
                             placeholder="Type your question here..."
                             {...field}
+                            {...form.register(
+                              `questions.${idx}.question` as const,
+                            )}
                           />
                         </FormControl>
                         <FormMessage />
@@ -113,7 +138,6 @@ export default function EditQuizPopup({
                   />
 
                   <FormField
-                    control={form.control}
                     name={`questions.${idx}.answer`}
                     render={({ field }) => (
                       <FormItem>
@@ -122,6 +146,9 @@ export default function EditQuizPopup({
                           <Input
                             placeholder="Type your answer here..."
                             {...field}
+                            {...form.register(
+                              `questions.${idx}.answer` as const,
+                            )}
                           />
                         </FormControl>
                         <FormMessage />
@@ -130,16 +157,19 @@ export default function EditQuizPopup({
                   />
                 </Fragment>
               ))}
+
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={addNewQuestion}
+              >
+                <Plus />
+              </Button>
             </form>
           </Form>
 
           <DialogFooter>
-            <Button
-              form="dialogForm"
-              type="submit"
-              variant="secondary"
-              disabled={isSaveBtnDisabled}
-            >
+            <Button form="dialogForm" type="submit" variant="secondary">
               Save
             </Button>
           </DialogFooter>

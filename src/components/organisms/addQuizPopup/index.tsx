@@ -57,7 +57,6 @@ export default function AddQuizPopup({ saveFn }: AddQuizPopupProps) {
   });
 
   function onSubmit(formData: AddQuizFormSchema) {
-    console.log("formData ", formData);
     saveFn({ id: crypto.randomUUID(), ...formData });
   }
 
@@ -78,7 +77,7 @@ export default function AddQuizPopup({ saveFn }: AddQuizPopupProps) {
   }, [form.formState.isSubmitSuccessful, form.reset]);
 
   return (
-    <DialogRoot modal={true}>
+    <DialogRoot>
       <DialogTrigger asChild>
         <Button className="w-full md:w-fit" variant="secondary">
           New Quiz
