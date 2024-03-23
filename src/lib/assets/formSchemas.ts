@@ -11,7 +11,7 @@ const questionSchema = z.object({
 });
 
 export const QuizFormSchema = z.object({
-  id: z.string(),
+  id: z.string().optional(),
   name: z
     .string({
       required_error: "Please enter quiz name",
