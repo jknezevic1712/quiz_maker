@@ -1,33 +1,58 @@
+"use client";
+
+import { useState } from "react";
 // components
 import { CirclePlay, CircleX } from "lucide-react";
 import { Button } from "~/components/atoms/button";
+import EditQuizPopup from "~/components/organisms/editQuizPopup";
 // types
 import { Quiz } from "~/lib/types/api";
 
 type TableItemProps = {
   item: Quiz;
+  editQuiz: (quiz: Quiz) => void;
+  deleteQuiz: (quizID: number) => void;
 };
 export default function TableItem(props: TableItemProps) {
-  const { item } = props;
+  const { item, editQuiz, deleteQuiz } = props;
+
+  const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
 
   return (
-    <div className="my-2 flex items-center justify-between rounded-sm border-transparent bg-zinc-100 p-6 shadow-md transition-all hover:shadow-xl">
-      <p className="font-bold leading-normal">{item.name}</p>
+    <>
+      <div
+        className="my-2 flex items-center justify-between rounded-sm border-transparent bg-zinc-100 p-6 shadow-md transition-all hover:shadow-xl"
+        onClick={() => setIsEditPopupOpen(true)}
+      >
+        <p className="font-bold leading-normal">{item.name}</p>
 
-      <div className="flex items-center gap-4">
-        <Button
-          className="px-3 py-1.5 text-zinc-950 transition-all hover:scale-110"
-          variant="ghost"
+        <div
+          className="z-50 flex items-center gap-4"
+          onClick={(e) => e.stopPropagation()}
         >
-          <CircleX />
-        </Button>
-        <Button
-          className="px-3 py-1.5 text-zinc-950 transition-all hover:scale-110"
-          variant="ghost"
-        >
-          <CirclePlay />
-        </Button>
+          <Button
+            className="px-3 py-1.5 text-zinc-950 transition-all hover:scale-110"
+            variant="ghost"
+            onClick={() => deleteQuiz(item.id)}
+          >
+            <CircleX />
+          </Button>
+          <Button
+            className="px-3 py-1.5 text-zinc-950 transition-all hover:scale-110"
+            variant="ghost"
+          >
+            <CirclePlay />
+          </Button>
+        </div>
       </div>
-    </div>
+      {isEditPopupOpen && (
+        <EditQuizPopup
+          item={item}
+          isPopupOpen={isEditPopupOpen}
+          closePopup={() => setIsEditPopupOpen(false)}
+          saveFn={editQuiz}
+        />
+      )}
+    </>
   );
 }

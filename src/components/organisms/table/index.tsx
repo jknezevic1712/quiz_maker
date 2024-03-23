@@ -18,6 +18,25 @@ export default function Table(props: TableProps) {
     setTableData((prev) => [...prev, { ...quiz, id: tableData.length + 1 }]);
   }
 
+  function editQuiz(quiz: Quiz) {
+    const updatedData = tableData.map((item) => {
+      if (item.id === quiz.id) {
+        return (item = quiz);
+      }
+      return item;
+    });
+    setTableData(updatedData);
+  }
+
+  function deleteQuiz(quizID: number) {
+    const confirmDialogResult = confirm(
+      "Are you sure you want to delete the quiz?",
+    );
+
+    if (!confirmDialogResult) return;
+    setTableData((prev) => prev.filter((quiz) => quiz.id !== quizID));
+  }
+
   return (
     <div className="flex min-h-[180px] w-full flex-col rounded-sm bg-zinc-200 p-8 transition-all">
       <div className="flex items-center justify-between border-b-2 border-zinc-950 pb-2">
@@ -28,7 +47,12 @@ export default function Table(props: TableProps) {
       </div>
       <div className="flex h-full flex-col justify-start">
         {tableData.map((item) => (
-          <TableItem key={item.id} item={item} />
+          <TableItem
+            key={item.id}
+            item={item}
+            editQuiz={editQuiz}
+            deleteQuiz={deleteQuiz}
+          />
         ))}
       </div>
     </div>
