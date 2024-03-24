@@ -108,6 +108,7 @@ export default function EditQuizPopup({
                   <div className="flex w-full items-center justify-between border-b border-zinc-950 pb-2">
                     <h2 className="italic">Question {idx + 1}</h2>
                     <Button
+                      title="Delete quiz"
                       type="button"
                       variant="destructive"
                       onClick={() => remove(idx)}
@@ -159,6 +160,7 @@ export default function EditQuizPopup({
               ))}
 
               <Button
+                title="Add question"
                 type="button"
                 variant="secondary"
                 onClick={addNewQuestion}
@@ -169,7 +171,12 @@ export default function EditQuizPopup({
           </Form>
 
           <DialogFooter>
-            <Button form="dialogForm" type="submit" variant="secondary">
+            <Button
+              title="Save quiz"
+              form="dialogForm"
+              type="submit"
+              variant="secondary"
+            >
               Save
             </Button>
           </DialogFooter>

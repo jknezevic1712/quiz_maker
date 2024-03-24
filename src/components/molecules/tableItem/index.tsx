@@ -31,6 +31,7 @@ export default function TableItem(props: TableItemProps) {
           onClick={(e) => e.stopPropagation()}
         >
           <Button
+            title="Delete quiz"
             className="px-3 py-1.5 text-zinc-950 transition-all hover:scale-110"
             variant="ghost"
             onClick={() => deleteQuiz(item.id)}
@@ -38,6 +39,7 @@ export default function TableItem(props: TableItemProps) {
             <CircleX />
           </Button>
           <Button
+            title="Solve quiz"
             className="px-3 py-1.5 text-zinc-950 transition-all hover:scale-110"
             variant="ghost"
           >

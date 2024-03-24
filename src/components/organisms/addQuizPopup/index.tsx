@@ -79,7 +79,11 @@ export default function AddQuizPopup({ saveFn }: AddQuizPopupProps) {
   return (
     <DialogRoot>
       <DialogTrigger asChild>
-        <Button className="w-full md:w-fit" variant="secondary">
+        <Button
+          title="New quiz"
+          className="w-full md:w-fit"
+          variant="secondary"
+        >
           New Quiz
         </Button>
       </DialogTrigger>
@@ -119,6 +123,7 @@ export default function AddQuizPopup({ saveFn }: AddQuizPopupProps) {
                 <div className="flex w-full items-center justify-between border-b border-zinc-950 pb-2">
                   <h2 className="italic">Question {idx + 1}</h2>
                   <Button
+                    title="Delete question"
                     type="button"
                     variant="destructive"
                     onClick={() => remove(idx)}
@@ -167,14 +172,24 @@ export default function AddQuizPopup({ saveFn }: AddQuizPopupProps) {
               </Fragment>
             ))}
 
-            <Button type="button" variant="secondary" onClick={addNewQuestion}>
+            <Button
+              title="Add question"
+              type="button"
+              variant="secondary"
+              onClick={addNewQuestion}
+            >
               <Plus />
             </Button>
           </form>
         </Form>
 
         <DialogFooter>
-          <Button form="dialogForm" type="submit" variant="secondary">
+          <Button
+            title="Save quiz"
+            form="dialogForm"
+            type="submit"
+            variant="secondary"
+          >
             Save
           </Button>
         </DialogFooter>
