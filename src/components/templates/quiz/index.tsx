@@ -4,6 +4,7 @@ import { useState } from "react";
 // components
 import { Button } from "~/components/atoms/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import QuizContent from "~/components/molecules/quizContent";
 // types
 import { useQuizMakerStore } from "~/lib/store/provider";
 
@@ -23,13 +24,14 @@ export default function QuizTemplate({ quizID }: QuizTemplateProps) {
   }
 
   return (
-    <div className="flex w-full flex-col items-center justify-start p-4 shadow-2xl">
-      <h2 className="mb-12 w-full text-center text-2xl font-bold capitalize italic md:text-left">
+    <div className="flex w-full flex-col items-center justify-start p-8 shadow-2xl">
+      <h2 className="w-full pb-32 text-center text-2xl font-bold capitalize italic md:text-left">
         {quiz.name}
       </h2>
 
-      <div className="flex items-center justify-between">
+      <div className="flex w-full items-center justify-between lg:max-w-3xl">
         <Button
+          className="px-1 md:px-4 md:py-2"
           title="Add question"
           type="button"
           variant="secondary"
@@ -39,21 +41,18 @@ export default function QuizTemplate({ quizID }: QuizTemplateProps) {
           <ArrowLeft />
         </Button>
 
-        <div className="flex flex-col items-center justify-center gap-8">
-          <div className="w-full max-w-lg text-center">
-            <h3 className="text-xl font-bold capitalize">
-              {quiz.questions[activeQuestionIdx]!.question}
-            </h3>
-            <p className="text-lg capitalize">
-              {quiz.questions[activeQuestionIdx]!.answer}
-            </p>
-            <Button title="Show answer" variant="info">
-              Show answer
-            </Button>
-          </div>
+        <div className="flex w-full flex-col items-center justify-center gap-8 text-center md:max-w-lg">
+          {quiz.questions.map((q, idx) => {
+            if (idx !== activeQuestionIdx) return null;
+
+            return (
+              <QuizContent key={q.id} question={q.question} answer={q.answer} />
+            );
+          })}
         </div>
 
         <Button
+          className="px-1 md:px-4 md:py-2"
           title="Add question"
           type="button"
           variant="secondary"
