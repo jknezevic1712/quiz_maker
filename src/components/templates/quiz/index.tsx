@@ -4,14 +4,14 @@ import { useState } from "react";
 // components
 import { Button } from "~/components/atoms/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-// utils
-import { mockQuizzes } from "~/lib/assets/mockData";
 // types
-import { Quiz } from "~/lib/types/api";
+import { useQuizMakerStore } from "~/lib/store/provider";
 
 type QuizTemplateProps = { quizID: string };
 export default function QuizTemplate({ quizID }: QuizTemplateProps) {
-  const [quiz] = useState<Quiz>(mockQuizzes.find((q) => q.id === quizID)!);
+  const quiz = useQuizMakerStore(
+    (s) => s.quizzes.find((q) => q.id === quizID)!,
+  );
   const [activeQuestionIdx, setActiveQuestionIdx] = useState(0);
 
   function previousQuestion() {
@@ -41,8 +41,12 @@ export default function QuizTemplate({ quizID }: QuizTemplateProps) {
 
         <div className="flex flex-col items-center justify-center gap-8">
           <div className="w-full max-w-lg text-center">
-            <h3 className="text-xl font-bold capitalize">Quiz question</h3>
-            <p className="text-lg capitalize">Quiz answer</p>
+            <h3 className="text-xl font-bold capitalize">
+              {quiz.questions[activeQuestionIdx]!.question}
+            </h3>
+            <p className="text-lg capitalize">
+              {quiz.questions[activeQuestionIdx]!.answer}
+            </p>
             <Button title="Show answer" variant="info">
               Show answer
             </Button>
@@ -53,7 +57,7 @@ export default function QuizTemplate({ quizID }: QuizTemplateProps) {
           title="Add question"
           type="button"
           variant="secondary"
-          disabled={activeQuestionIdx === quiz.questions.length}
+          disabled={activeQuestionIdx === quiz.questions.length - 1}
           onClick={nextQuestion}
         >
           <ArrowRight />

@@ -2,6 +2,9 @@ import "~/styles/globals.css";
 
 import { Inter } from "next/font/google";
 
+// store
+import { QuizMakerStoreProvider } from "~/lib/store/provider";
+
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -23,7 +26,7 @@ export default function RootLayout({
       <body
         className={`flex w-full flex-col items-center justify-start bg-zinc-100 font-sans ${inter.variable}`}
       >
-        {children}
+        <QuizMakerStoreProvider>{children}</QuizMakerStoreProvider>
       </body>
     </html>
   );

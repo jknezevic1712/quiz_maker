@@ -8,16 +8,27 @@ import EditQuizPopup from "~/components/organisms/editQuizPopup";
 import Link from "next/link";
 // types
 import { Quiz } from "~/lib/types/api";
+// store
+import { useQuizMakerStore } from "~/lib/store/provider";
 
 type TableItemProps = {
   item: Quiz;
-  editQuiz: (quiz: Quiz) => void;
-  deleteQuiz: (quizID: string) => void;
 };
 export default function TableItem(props: TableItemProps) {
-  const { item, editQuiz, deleteQuiz } = props;
+  const { item } = props;
+  const editQuiz = useQuizMakerStore((s) => s.editQuiz);
+  const deleteQuiz = useQuizMakerStore((s) => s.deleteQuiz);
 
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
+
+  function handleDeletingQuiz(quizID: string) {
+    const confirmDialogResult = confirm(
+      "Are you sure you want to delete the quiz?",
+    );
+
+    if (!confirmDialogResult) return;
+    deleteQuiz(quizID);
+  }
 
   return (
     <>
@@ -35,7 +46,7 @@ export default function TableItem(props: TableItemProps) {
             title="Delete quiz"
             className="px-3 py-1.5 text-zinc-950 transition-all hover:scale-110"
             variant="ghost"
-            onClick={() => deleteQuiz(item.id)}
+            onClick={() => handleDeletingQuiz(item.id)}
           >
             <CircleX />
           </Button>
