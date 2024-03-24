@@ -5,6 +5,7 @@ import { useState } from "react";
 import { CirclePlay, CircleX } from "lucide-react";
 import { Button } from "~/components/atoms/button";
 import EditQuizPopup from "~/components/organisms/editQuizPopup";
+import Link from "next/link";
 // types
 import { Quiz } from "~/lib/types/api";
 
@@ -43,7 +44,9 @@ export default function TableItem(props: TableItemProps) {
             className="px-3 py-1.5 text-zinc-950 transition-all hover:scale-110"
             variant="ghost"
           >
-            <CirclePlay />
+            <Link href={`quiz/${item.id}`}>
+              <CirclePlay />
+            </Link>
           </Button>
         </div>
       </div>

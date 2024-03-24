@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`flex min-h-screen w-full flex-col items-center justify-start bg-zinc-100 p-4 font-sans ${inter.variable}`}
+        className={`flex w-full flex-col items-center justify-start bg-zinc-100 font-sans ${inter.variable}`}
       >
         {children}
       </body>

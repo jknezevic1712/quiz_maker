@@ -5,7 +5,7 @@ import Table from "~/components/organisms/table";
 // utils
 import { mockQuizzes } from "~/lib/assets/mockData";
 
-export default function QuizzesOverview() {
+export default function QuizzesOverviewTemplate() {
   const [quizzes, setQuizzes] = useState(mockQuizzes);
 
   return (
