@@ -33,7 +33,7 @@ export default function TableItem(props: TableItemProps) {
   return (
     <>
       <div
-        className="my-2 flex items-center justify-between rounded-sm border-transparent bg-zinc-100 p-6 shadow-md transition-all hover:shadow-xl"
+        className="my-2 flex flex-col items-center justify-between gap-4 rounded-sm border-transparent bg-zinc-100 p-6 shadow-md transition-all hover:shadow-xl md:flex-row md:gap-0"
         onClick={() => setIsEditPopupOpen(true)}
       >
         <p className="font-bold leading-normal">{item.name}</p>
