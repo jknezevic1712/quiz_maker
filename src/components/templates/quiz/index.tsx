@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Button } from "~/components/atoms/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import QuizContent from "~/components/molecules/quizContent";
+import Link from "next/link";
 // types
 import { useQuizMakerStore } from "~/lib/store/provider";
 
@@ -25,7 +26,7 @@ export default function QuizTemplate({ quizID }: QuizTemplateProps) {
 
   return (
     <div className="flex w-full flex-col items-center justify-start p-8 shadow-2xl">
-      <h2 className="w-full pb-32 text-center text-2xl font-bold capitalize italic md:text-left">
+      <h2 className="w-full pb-16 text-center text-2xl font-bold capitalize italic md:pb-32 md:text-left">
         {quiz.name}
       </h2>
 
@@ -62,6 +63,16 @@ export default function QuizTemplate({ quizID }: QuizTemplateProps) {
           <ArrowRight />
         </Button>
       </div>
+
+      {activeQuestionIdx === quiz.questions.length - 1 && (
+        <div className="flex w-full items-center justify-center pt-16 md:pt-32">
+          <Link href="/">
+            <Button title="Finish" type="button" variant="secondary">
+              Finish
+            </Button>
+          </Link>
+        </div>
+      )}
     </div>
   );
 }
