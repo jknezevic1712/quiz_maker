@@ -4,8 +4,8 @@ import { useState } from "react";
 // components
 import { CirclePlay, CircleX } from "lucide-react";
 import { Button } from "~/components/atoms/button";
-import EditQuizPopup from "~/components/organisms/editQuizPopup";
 import Link from "next/link";
+import FormPopup from "~/components/organisms/formPopup";
 // types
 import { Quiz } from "~/lib/types/api";
 // store
@@ -19,7 +19,7 @@ export default function TableItem(props: TableItemProps) {
   const editQuiz = useQuizMakerStore((s) => s.editQuiz);
   const deleteQuiz = useQuizMakerStore((s) => s.deleteQuiz);
 
-  const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   function handleDeletingQuiz(quizID: string) {
     const confirmDialogResult = confirm(
@@ -34,7 +34,7 @@ export default function TableItem(props: TableItemProps) {
     <>
       <div
         className="my-2 flex flex-col items-center justify-between gap-4 rounded-sm border-transparent bg-zinc-100 p-6 shadow-md transition-all hover:shadow-xl md:flex-row md:gap-0"
-        onClick={() => setIsEditPopupOpen(true)}
+        onClick={() => setIsPopupOpen(true)}
       >
         <p className="font-bold leading-normal">{item.name}</p>
 
@@ -61,12 +61,12 @@ export default function TableItem(props: TableItemProps) {
           </Button>
         </div>
       </div>
-      {isEditPopupOpen && (
-        <EditQuizPopup
-          item={item}
-          isPopupOpen={isEditPopupOpen}
-          closePopup={() => setIsEditPopupOpen(false)}
+      {isPopupOpen && (
+        <FormPopup
           saveFn={editQuiz}
+          isPopupOpen={isPopupOpen}
+          closePopup={() => setIsPopupOpen(false)}
+          quiz={item}
         />
       )}
     </>

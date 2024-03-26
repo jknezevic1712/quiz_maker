@@ -7,8 +7,6 @@ import {
   DialogFooter,
   DialogContent,
   DialogTitle,
-  DialogTrigger,
-  closeDialog,
 } from "~/components/molecules/dialog";
 import { Button } from "~/components/atoms/button";
 import Textarea from "~/components/atoms/textarea";
@@ -30,9 +28,9 @@ import type * as z from "zod";
 // types
 import { Quiz } from "~/lib/types/api";
 
-type AddQuizFormSchema = Omit<z.infer<typeof QuizFormSchema>, "id">;
+type FormPopupFormSchema = Omit<z.infer<typeof QuizFormSchema>, "id">;
 
-const defaultValues: AddQuizFormSchema = {
+const defaultValues: FormPopupFormSchema = {
   name: "",
   questions: [
     {
@@ -43,20 +41,33 @@ const defaultValues: AddQuizFormSchema = {
   ],
 };
 
-type AddQuizPopupProps = {
+type FormPopupProps = {
   saveFn: (quiz: Quiz) => void;
+  isPopupOpen: boolean;
+  closePopup: () => void;
+  quiz?: Quiz;
 };
-export default function AddQuizPopup({ saveFn }: AddQuizPopupProps) {
-  const form = useForm<AddQuizFormSchema>({
+export default function FormPopup({
+  saveFn,
+  isPopupOpen,
+  closePopup,
+  quiz,
+}: FormPopupProps) {
+  const form = useForm<FormPopupFormSchema>({
     resolver: zodResolver(QuizFormSchema),
-    defaultValues,
+    defaultValues: quiz ?? defaultValues,
   });
   const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: "questions",
   });
 
-  function onSubmit(formData: AddQuizFormSchema) {
+  function onSubmit(formData: FormPopupFormSchema) {
+    if (quiz) {
+      if (JSON.stringify(formData) === JSON.stringify(quiz)) return;
+      return saveFn(formData as Quiz);
+    }
+
     saveFn({ id: crypto.randomUUID(), ...formData });
   }
 
@@ -71,26 +82,16 @@ export default function AddQuizPopup({ saveFn }: AddQuizPopupProps) {
 
   useEffect(() => {
     if (form.formState.isSubmitSuccessful) {
-      closeDialog();
+      closePopup();
       form.reset();
     }
   }, [form.formState.isSubmitSuccessful, form.reset]);
 
   return (
-    <DialogRoot>
-      <DialogTrigger asChild>
-        <Button
-          title="New quiz"
-          className="w-full md:w-fit"
-          variant="secondary"
-        >
-          New Quiz
-        </Button>
-      </DialogTrigger>
-
+    <DialogRoot open={isPopupOpen} onOpenChange={closePopup}>
       <DialogContent className="bg-zinc-100 sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>New Quiz</DialogTitle>
+          <DialogTitle>{quiz ? "Edit Quiz" : "New Quiz"}</DialogTitle>
         </DialogHeader>
 
         <Separator />
