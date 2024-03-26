@@ -62,6 +62,9 @@ export default function FormPopup({
     name: "questions",
   });
 
+  const isSaveDisabled =
+    JSON.stringify(quiz) === JSON.stringify(form.getValues());
+
   function onSubmit(formData: FormPopupFormSchema) {
     if (quiz) {
       if (JSON.stringify(formData) === JSON.stringify(quiz)) return;
@@ -190,6 +193,7 @@ export default function FormPopup({
             form="dialogForm"
             type="submit"
             variant="secondary"
+            disabled={quiz ? isSaveDisabled : false}
           >
             Save
           </Button>
