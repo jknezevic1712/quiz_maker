@@ -1,24 +1,28 @@
 import { create } from "zustand";
 // utils
-import { mockQuizzes } from "../assets/mockData";
+import { mockQuizQuestions, mockQuizzes } from "../assets/mockData";
 // types
-import { Quiz } from "../types/api";
+import { Question, Quiz } from "../types/api";
 import { persist } from "zustand/middleware";
 
 export type QuizMakerState = {
   quizzes: Quiz[];
+  quizQuestions: Question[];
 };
 
 export type StoreActions = {
   addNewQuiz: (quiz: Quiz) => void;
   editQuiz: (quiz: Quiz) => void;
   deleteQuiz: (quizID: string) => void;
+
+  addQuizQuestion: (question: Question) => void;
 };
 
 export type QuizMakerStore = QuizMakerState & StoreActions;
 
 export const defaultInitState: QuizMakerState = {
   quizzes: mockQuizzes,
+  quizQuestions: mockQuizQuestions,
 };
 
 export const createQuizMakerStore = (
@@ -28,7 +32,9 @@ export const createQuizMakerStore = (
     persist<QuizMakerStore>(
       (set) => ({
         ...initState,
-        addNewQuiz: (quiz) => set((s) => ({ quizzes: [...s.quizzes, quiz] })),
+
+        addNewQuiz: (quiz) =>
+          set((s) => ({ ...s, quizzes: [...s.quizzes, quiz] })),
         editQuiz: (quiz) =>
           set((s) => {
             const updatedQuizzes = s.quizzes.map((sQuiz) => {
@@ -39,6 +45,7 @@ export const createQuizMakerStore = (
             });
 
             return {
+              ...s,
               quizzes: updatedQuizzes,
             };
           }),
@@ -49,9 +56,13 @@ export const createQuizMakerStore = (
             );
 
             return {
+              ...s,
               quizzes: updatedQuizzes,
             };
           }),
+
+        addQuizQuestion: (question) =>
+          set((s) => ({ ...s, quizQuestions: [...s.quizQuestions, question] })),
       }),
       {
         name: "quiz-maker-storage",
