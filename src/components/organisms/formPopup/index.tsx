@@ -163,6 +163,9 @@ export default function FormPopup({
                               form.setValue(
                                 `questions.${idx}.question`,
                                 question,
+                                {
+                                  shouldDirty: true,
+                                },
                               )
                             }
                           />
