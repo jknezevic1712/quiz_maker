@@ -22,9 +22,11 @@ import { Input } from "~/components/atoms/input";
 import { QuizFormSchema } from "~/lib/assets/formSchemas";
 import Separator from "~/components/atoms/separator";
 import { Minus, Plus } from "lucide-react";
+import QuestionSuggestionPopover from "../questionSuggestionPopover";
 // utils
 import { zodResolver } from "@hookform/resolvers/zod";
 import type * as z from "zod";
+import { useQuizMakerStore } from "~/lib/store/provider";
 // types
 import { Quiz } from "~/lib/types/api";
 
@@ -53,6 +55,8 @@ export default function FormPopup({
   closePopup,
   quiz,
 }: FormPopupProps) {
+  const quizQuestions = useQuizMakerStore((s) => s.quizQuestions);
+
   const form = useForm<FormPopupFormSchema>({
     resolver: zodResolver(QuizFormSchema),
     defaultValues: quiz ?? defaultValues,
@@ -143,14 +147,26 @@ export default function FormPopup({
                     <FormItem>
                       <FormLabel>Question</FormLabel>
                       <FormControl>
-                        <Textarea
-                          rows={5}
-                          placeholder="Type your question here..."
-                          {...field}
-                          {...form.register(
-                            `questions.${idx}.question` as const,
-                          )}
-                        />
+                        <div className="relative flex flex-col items-end justify-center gap-2">
+                          <Textarea
+                            id={`questions.${idx}.question`}
+                            rows={5}
+                            placeholder="Type your question here..."
+                            {...field}
+                            {...form.register(
+                              `questions.${idx}.question` as const,
+                            )}
+                          />
+                          <QuestionSuggestionPopover
+                            questions={quizQuestions}
+                            insertSuggestedQuestion={(question) =>
+                              form.setValue(
+                                `questions.${idx}.question`,
+                                question,
+                              )
+                            }
+                          />
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
