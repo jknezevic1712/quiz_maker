@@ -34,7 +34,11 @@ export const createQuizMakerStore = (
         ...initState,
 
         addNewQuiz: (quiz) =>
-          set((s) => ({ ...s, quizzes: [...s.quizzes, quiz] })),
+          set((s) => ({
+            ...s,
+            quizzes: [...s.quizzes, quiz],
+            quizQuestions: [...s.quizQuestions, ...quiz.questions],
+          })),
         editQuiz: (quiz) =>
           set((s) => {
             const updatedQuizzes = s.quizzes.map((sQuiz) => {
